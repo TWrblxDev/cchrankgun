@@ -10,7 +10,7 @@ class Hello(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        print(message.content)
+
         
     
      
