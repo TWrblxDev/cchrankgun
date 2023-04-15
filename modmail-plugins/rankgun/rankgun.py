@@ -18,7 +18,7 @@ class Hello(commands.Cog):
     async def rankshout(self, ctx, *, message:str):
         await ctx.send("Message To set a shout.")
         time.sleep(5)
-        await ctx.send(=f'{message}')
+        await ctx.send(f='{message}')
         
 
     @commands.command()
