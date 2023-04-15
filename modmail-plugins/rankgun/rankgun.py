@@ -1,6 +1,6 @@
 import requests
  
-BaseUrl = "https://api.rankgun.works"
+
 
 from discord.ext import commands
 
@@ -12,13 +12,16 @@ class Hello(commands.Cog):
     async def on_message(self, message):
         print(message.content)
         
-     Response = requests.get(f"{BaseUrl}/status")
-     Data =  Response.json()
+    
      
 
     @commands.command()
-    async def rankstatus(self, ctx, *, message):
-        await ctx.send(data)
+    async def rankstatus(self, ctx ):
+        BaseUrl = "https://api.rankgun.works"
+        Response = requests.get(f"{BaseUrl}/status")
+        Data =  Response.json()
+        await ctx.send(Data)
+        print(Data)
 
 async def setup(bot):
     await bot.add_cog(Hello(bot))
