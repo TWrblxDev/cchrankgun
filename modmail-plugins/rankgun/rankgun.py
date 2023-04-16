@@ -2,8 +2,6 @@ import requests
 import time
 
  
-ranklogin = "RJciwnzdm8TOvs6dw04YA1phhLBbyR"
-
 from discord.ext import commands
 
 class Hello(commands.Cog):
