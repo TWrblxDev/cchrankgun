@@ -37,6 +37,7 @@ async function main() {
     let hrefdom = $("a[href*='cloudflare.com'][target='_blank']");
     if (ray_id.length > 0 && hrefdom.length > 0) {
         VerifyYouAreHuman_01();
+        console.log("Bypassed")
         return;
     }
     if (window.location.host == 'challenges.cloudflare.com' && $("div[id='success']").length > 0 && $("div[id='fail']").length > 0 && $("div[id='expired']").length > 0) {
