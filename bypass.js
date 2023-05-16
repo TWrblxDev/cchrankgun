@@ -1,42 +1,52 @@
 // ==UserScript==
-// @name        All Popups Blocker and reCAPTCHA Solver
-// @namespace   Violentmonkey Scripts
-// @include     /^(https?:\/\/)(.+)?(shortzon|coinadfly|fc-lc|claimclicks)(\.com)(\/.*)/
-// @include     /^(https?:\/\/)(.+)?(downfile|promo-visits)(\.site)(\/.*)/
-// @include     /^(https?:\/\/)(.+)?(bcvc|satoshi-win)(\.xyz)(\/.*)/
-// @include     /^(https?:\/\/)(1dogecoin|faucet)(\.work)(\/.*)/
-// @match       *://*.filesearch.link/*
-// @match       *://*.trangchu.news/*
-// @match       *://*.ccshort.click/*
-// @match       *://*.bitcoinly.in/*
-// @match       *://*.cryptosh.pro/*
-// @match       *://*.vshort.link/*
-// @match       *://*.linka.click/*
-// @match       *://*.linkres.in/*
-// @match       *://*.cashurl.in/*
-// @match       *://*.linkad.in/*
-// @match       *://*.cuturl.in/*
-// @match       *://*.mitly.us/*
-// @match       *://*.aii.sh/*
-// @match       *://*.iir.ai/*
-// @match       *://*/recaptcha/*
-// @version     4.6
-// @author      Blogger Pemula
-// @run-at      document-start
-// @license     GPL-3.0-or-later
-// @grant       GM_xmlhttpRequest
-// @require     https://code.jquery.com/jquery-3.6.0.min.js
-// @require     https://greasyfork.org/scripts/444872-7-recaptcha-solver-backup/code/7_Recaptcha%20Solver%20(BackUp).user.js#bypass=true
-// @description This Script will Block All Popups Sites in the Lists , and Auto Solving Google reCAPTCHA
+// @name         Autopass Cloudflare CAPTCHA
+// @namespace    Violentmonkey Scripts
+// @match        *://*/*
+// @version      XiaoYing_2023.05.25.22
+// @grant        none
+// @run-at       document-start
+// @author       github.com @XiaoYingYo
+// @require     https://greasyfork.org/scripts/464929-module-jquery-xiaoying/code/module_jquery_XiaoYing.js
+// @require     https://greasyfork.org/scripts/464780-global-module/code/global_module.js
+// @icon         https://www.google.com/s2/favicons?sz=48&domain=cloudflare.com
+// @icon64       https://www.google.com/s2/favicons?sz=64&domain=cloudflare.com
+// @description Violentmonkey Scripts
 // ==/UserScript==
-/*jslint evil: true */
 
-var blockonclick = new Function("console.log('Blocked By BloggerPemula')");
+global_module = window['global_module'];
 
-function BlockPopup(e){return 1;}
-parent.open=BlockPopup; this.open=BlockPopup; window.open=BlockPopup; onload=BlockPopup;
-window.open = function(){ return;};
-onload = function(){ return;};
-this.open = function(){ return;};
-parent.open = function(){ return;};
-unsafeWindow.open = function(){};
+async function VerifyYouAreHuman_01() {
+    let dom = await global_module.waitForElement("input[value='Verify you are human'][type='button']", null, null, 200, -1);
+    global_module.clickElement($(dom).eq(0)[0]);
+}
+
+async function VerifyYouAreHuman_02() {
+    let dom = await global_module.waitForElement("input[type='checkbox']", null, null, 200, -1);
+    global_module.clickElement($(dom).eq(0)[0]);
+    dom = await global_module.waitForElement("span[class='mark']", null, null, 200, -1);
+    global_module.clickElement($(dom).eq(0)[0]);
+}
+
+async function VerifyYouAreHuman_03() {
+    let dom = await global_module.waitForElement("input[value='Verify you are human'][type='button']", null, null, 200, -1);
+    global_module.clickElement($(dom).eq(0)[0]);
+}
+
+async function main() {
+    let ray_id = $("div[class='ray-id']");
+    let hrefdom = $("a[href*='cloudflare.com'][target='_blank']");
+    if (ray_id.length > 0 && hrefdom.length > 0) {
+        VerifyYouAreHuman_01();
+        return;
+    }
+    if (window.location.host == 'challenges.cloudflare.com' && $("div[id='success']").length > 0 && $("div[id='fail']").length > 0 && $("div[id='expired']").length > 0) {
+        VerifyYouAreHuman_02();
+        return;
+    }
+    if ($('div[class="logo"]').length > 0) {
+        VerifyYouAreHuman_03();
+        return;
+    }
+}
+
+$(document).ready(() => main());
